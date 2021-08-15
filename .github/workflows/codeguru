@@ -1,0 +1,21 @@
+name: codeguru
+on: workflow_dispatch
+jobs:
+  my-job:
+    runs-on: 	ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.ACCESSKEY }}
+          aws-secret-access-key: ${{ secrets.SECRETEKEY }}
+          aws-region: us-west-2  # Region to access CodeGuru 
+      # Step 2: Add CodeGuru Reviewer Action
+      - name: CodeGuru Reviewer
+        uses: aws-actions/codeguru-reviewer@v1.1
+        with:
+          s3_bucket: codeguru-reviewer-xwana-bucket-pdx  # S3 Bucket with "codeguru-reviewer-*" prefix
